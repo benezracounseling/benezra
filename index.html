@@ -1,322 +1,75 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Benezra Counseling | Therapy in Los Angeles</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        .gradient-bg {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-        }
-        .therapy-card {
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .therapy-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-        }
-        .floating {
-            animation: floating 3s ease-in-out infinite;
-        }
-        @keyframes floating {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-        .heart-beat {
-            animation: heartBeat 1.5s ease infinite;
-        }
-        @keyframes heartBeat {
-            0% { transform: scale(1); }
-            25% { transform: scale(1.1); }
-            50% { transform: scale(1); }
-            75% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-    </style>
-</head>
-<body class="font-sans antialiased text-gray-800">
-    <!-- Navigation -->
-    <nav class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0 flex items-center">
-                        <i class="fas fa-heart text-indigo-600 text-2xl mr-2"></i>
-                        <span class="text-xl font-semibold text-indigo-900">Benezra Counseling</span>
-                    </div>
-                </div>
-                <div class="hidden md:ml-6 md:flex md:items-center md:space-x-8">
-                    <a href="#about" class="text-gray-900 hover:text-indigo-600 px-3 py-2 text-sm font-medium">About</a>
-                    <a href="#approach" class="text-gray-900 hover:text-indigo-600 px-3 py-2 text-sm font-medium">Approach</a>
-                    <a href="#contact" class="text-gray-900 hover:text-indigo-600 px-3 py-2 text-sm font-medium">Contact</a>
-                    <a href="https://zcal.co/zachbenezra" target="_blank" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
-                        Book Session
-                    </a>
-                </div>
-                <div class="-mr-2 flex items-center md:hidden">
-                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Mobile menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="#about" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50">About</a>
-                <a href="#approach" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50">Approach</a>
-                <a href="#contact" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50">Contact</a>
-                <a href="https://zcal.co/zachbenezra" target="_blank" class="block px-3 py-2 rounded-md text-base font-medium bg-indigo-600 text-white hover:bg-indigo-700">
-                    Book Session
-                </a>
-            </div>
-        </div>
-    </nav>
+import React from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
-    <!-- Hero Section -->
-    <div class="gradient-bg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
-            <div class="md:flex items-center">
-                <div class="md:w-1/2 mb-10 md:mb-0">
-                    <h1 class="text-4xl md:text-5xl font-bold text-indigo-900 mb-6">Healing Starts Here</h1>
-                    <p class="text-lg text-gray-700 mb-8">Compassionate therapy to help you release what's weighing heavy and rediscover your authentic self.</p>
-                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                        <a href="https://www.psychologytoday.com/us/therapists/zachary-hunter-benezra-los-angeles-ca/1525761" target="_blank" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-md text-center font-medium transition duration-300">
-                            Schedule a Session
-                        </a>
-                        <a href="#contact" class="bg-white hover:bg-gray-100 text-indigo-600 px-6 py-3 rounded-md text-center font-medium border border-indigo-600 transition duration-300">
-                            Contact Me
-                        </a>
-                    </div>
-                </div>
-                <div class="md:w-1/2 flex justify-center">
-                    <div class="relative w-64 h-64 md:w-80 md:h-80">
-                        <div class="absolute inset-0 bg-indigo-100 rounded-full opacity-20"></div>
-                        <div class="absolute inset-4 bg-indigo-200 rounded-full opacity-30"></div>
-                        <div class="absolute inset-8 bg-indigo-300 rounded-full opacity-40"></div>
-                        <div class="absolute inset-12 bg-white rounded-full flex items-center justify-center shadow-lg floating">
-                            <i class="fas fa-heart text-indigo-600 text-6xl heart-beat"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+const burgerSpots = [
+  {
+    name: "Burgerlords",
+    description: "Crispy edges, vegan option that slaps, hipster-approved.",
+    img: "/burgers/burger1.jpg",
+  },
+  {
+    name: "Father's Office",
+    description: "No ketchup allowed. Still elite.",
+    img: "/burgers/burger2.jpg",
+  },
+  // ... add up to 16 spots like above
+];
+
+const friends = ["Zach", "Nathan", "Sagiv"];
+
+export default function BurgerJourney() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white p-4 md:p-8 font-sans">
+      <h1 className="text-4xl md:text-5xl font-bold text-center mb-4 text-cyan-400">🍔 The Burger Quest: LA</h1>
+      <p className="text-center mb-6 text-lg max-w-2xl mx-auto text-gray-300">
+        Three brave friends. One greasy mission: to crown the ultimate burger in Los Angeles. Join Zach, Nathan, and Sagiv as they chew their way to glory.
+      </p>
+
+      <Tabs defaultValue="photos" className="w-full max-w-4xl mx-auto">
+        <TabsList className="grid grid-cols-2 mb-6 bg-gray-700 rounded-xl p-1">
+          <TabsTrigger value="photos" className="data-[state=active]:bg-cyan-500 data-[state=active]:text-white rounded-lg py-2 transition">🍔 Burger Wall</TabsTrigger>
+          <TabsTrigger value="about" className="data-[state=active]:bg-cyan-500 data-[state=active]:text-white rounded-lg py-2 transition">🤪 Meet the Crew</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="photos">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {burgerSpots.map((spot, index) => (
+              <Card key={index} className="overflow-hidden bg-gray-800 border border-gray-700 rounded-2xl shadow-md">
+                <img
+                  src={spot.img}
+                  alt={spot.name}
+                  className="w-full h-48 object-cover"
+                />
+                <CardContent>
+                  <h2 className="font-bold text-xl mt-2 text-cyan-300">{spot.name}</h2>
+                  <p className="text-sm text-gray-400">{spot.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="about">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
+            {friends.map((friend, index) => (
+              <Card key={index} className="bg-gray-800 border border-gray-700 rounded-2xl shadow-md">
+                <CardContent className="p-4 text-center">
+                  <div className="text-4xl mb-2">😎</div>
+                  <h3 className="text-xl font-semibold text-cyan-300">{friend}</h3>
+                  <p className="text-sm text-gray-400">
+                    Resident burger expert, bite analyst, and sauce critic.
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+      </Tabs>
+
+      <footer className="text-center text-xs text-gray-500 mt-10">
+        &copy; {new Date().getFullYear()} Burger Quest LA. No diets were harmed in the making.
+      </footer>
     </div>
-
-    <!-- About Section -->
-    <div id="about" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-        <div class="text-center mb-16">
-            <h2 class="text-3xl font-bold text-indigo-900 mb-4">About Me</h2>
-            <div class="w-20 h-1 bg-indigo-600 mx-auto"></div>
-        </div>
-        <div class="md:flex items-center">
-            <div class="md:w-1/3 mb-10 md:mb-0 flex justify-center">
-                <div class="w-64 h-64 rounded-full overflow-hidden shadow-lg">
-                    <img src="https://photos.fife.usercontent.google.com/pw/AP1GczOP07nVR9pqzmo0Q0X2rwxT3xgOlugMx6iloV5B9b5lM5X3W-BmEYO6=w1108-h1476-s-no-gm?authuser=0" alt="Therapist" class="w-full h-full object-cover">
-                </div>
-            </div>
-            <div class="md:w-2/3 md:pl-12">
-                <p class="text-lg text-gray-700 mb-6">
-                    I am here to hold space for you to share whatever it is that is weighing heavy on you, and offer the support you need to inevitably release it. I believe that what most people want is to be seen for the pure soul that they came to this Earth as, and what they need help with is reprogramming some of the unconscious beliefs that society has instilled in them.
-                </p>
-                <p class="text-lg text-gray-700 mb-6">
-                    Some of the ways in which I help my clients is by utilizing narrative, cognitive, and existential therapy to bring compassion to what lives in the unseen. Through formal training and deep intuition, I've become a heart-led therapist who offers a safe, supportive space for healing.
-                </p>
-                <p class="text-lg text-gray-700">
-                    Rooted in spiritual, narrative, and cognitive behavioral therapy, my approach blends structure and soul to help you feel truly seen as we gently explore your path forward. I am happy to adapt to your wants and needs. I would be honored if you were to trust me with your healing journey. I understand that life can be hard sometimes and I want to assure you that you do not have to go through it alone. I am here to offer you support in any way that I can and would love for you to reach out if you resonate with my profile.
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Approach Section -->
-    <div id="approach" class="bg-indigo-50 py-16 md:py-24">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold text-indigo-900 mb-4">My Therapeutic Approach</h2>
-                <div class="w-20 h-1 bg-indigo-600 mx-auto"></div>
-            </div>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="therapy-card bg-white p-8 rounded-lg">
-                    <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mb-6 mx-auto">
-                        <i class="fas fa-book-open text-indigo-600 text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold text-center mb-4 text-indigo-900">Narrative Therapy</h3>
-                    <p class="text-gray-700 text-center">Helping you separate from problematic stories and rewrite your life narrative with empowerment and hope.</p>
-                </div>
-                <div class="therapy-card bg-white p-8 rounded-lg">
-                    <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mb-6 mx-auto">
-                        <i class="fas fa-brain text-indigo-600 text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold text-center mb-4 text-indigo-900">Cognitive Behavioral</h3>
-                    <p class="text-gray-700 text-center">Identifying and transforming unhelpful thought patterns that influence emotions and behaviors.</p>
-                </div>
-                <div class="therapy-card bg-white p-8 rounded-lg">
-                    <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mb-6 mx-auto">
-                        <i class="fas fa-search text-indigo-600 text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold text-center mb-4 text-indigo-900">Existential Therapy</h3>
-                    <p class="text-gray-700 text-center">Exploring life's deeper questions to find meaning, purpose, and authentic self-expression.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- CTA Section -->
-    <div class="bg-indigo-900 text-white py-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-3xl font-bold mb-6">Ready to Begin Your Healing Journey?</h2>
-            <p class="text-xl mb-8 max-w-3xl mx-auto">You don't have to navigate life's challenges alone. I'm here to walk alongside you.</p>
-            <a href="https://www.psychologytoday.com/us/therapists/zachary-hunter-benezra-los-angeles-ca/1525761" target="_blank" class="bg-white hover:bg-gray-100 text-indigo-900 px-8 py-3 rounded-md font-medium text-lg inline-block transition duration-300">
-               Psychology Today Profile
-            </a>
-        </div>
-    </div>
-
-    <!-- Contact Section -->
-    <div id="contact" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-        <div class="text-center mb-16">
-            <h2 class="text-3xl font-bold text-indigo-900 mb-4">Get In Touch</h2>
-            <div class="w-20 h-1 bg-indigo-600 mx-auto"></div>
-        </div>
-        <div class="md:flex">
-            <div class="md:w-1/2 mb-10 md:mb-0">
-                <div class="bg-white p-8 rounded-lg shadow-lg">
-                    <h3 class="text-xl font-semibold mb-6 text-indigo-900">Contact Information</h3>
-                    <div class="space-y-4">
-                        <div class="flex items-start">
-                            <div class="flex-shrink-0">
-                                <i class="fas fa-envelope text-indigo-600 mt-1"></i>
-                            </div>
-                            <div class="ml-3">
-                                <p class="text-gray-700">Email me at:</p>
-                                <a href="mailto:zachthetherapist@gmail.com" class="text-indigo-600 hover:underline">zachthetherapist@gmail.com</a>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="flex-shrink-0">
-                                <i class="fas fa-phone text-indigo-600 mt-1"></i>
-                            </div>
-                            <div class="ml-3">
-                                <p class="text-gray-700">Call me at:</p>
-                                <a href="tel:+3104319244" class="text-indigo-600 hover:underline">(310) 431-9244</a>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="flex-shrink-0">
-                                <i class="fas fa-map-marker-alt text-indigo-600 mt-1"></i>
-                            </div>
-                            <div class="ml-3">
-                                <p class="text-gray-700">Located in:</p>
-                                <p class="text-gray-700">Los Angeles, CA</p>
-                            </div>
-                        </div>
-                       
-                    </div>
-                </div>
-            </div>
-            <div class="md:w-1/2 md:pl-12">
-                <div class="bg-white p-8 rounded-lg shadow-lg">
-                    <h3 class="text-xl font-semibold mb-6 text-indigo-900">Send a Message</h3>
-                    <form id="contactForm" class="space-y-4">
-                        <div>
-                            <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-                            <input type="text" id="name" name="name" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-                        </div>
-                        <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                            <input type="email" id="email" name="email" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-                        </div>
-                        <div>
-                            <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
-                            <textarea id="message" name="message" rows="4" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"></textarea>
-                        </div>
-                        <div>
-                            <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-md font-medium transition duration-300">
-                                Send Message
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="md:flex md:items-center md:justify-between">
-                <div class="flex justify-center md:justify-start mb-8 md:mb-0">
-                    <div class="flex-shrink-0 flex items-center">
-                        <i class="fas fa-heart text-indigo-400 text-2xl mr-2"></i>
-                        <span class="text-xl font-semibold text-white">Benezra Counseling</span>
-                    </div>
-                </div>
-                <div class="flex justify-center md:justify-end space-x-6">
-                    <a href="#" class="text-gray-400 hover:text-white">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-white">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="https://www.psychologytoday.com/us/therapists/zachary-hunter-benezra-los-angeles-ca/1525761" target="_blank" class="text-gray-400 hover:text-white">
-                        <i class="fas fa-external-link-alt"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="mt-8 border-t border-gray-800 pt-8 md:flex md:items-center md:justify-between">
-                <div class="text-center md:text-left text-gray-400 text-sm mb-4 md:mb-0">
-                    &copy; 2025 Benezra Counseling. All rights reserved.
-                </div>
-                <div class="flex justify-center md:justify-end space-x-6">
-                    <a href="#" class="text-gray-400 hover:text-white text-sm">Privacy Policy</a>
-                    <a href="#" class="text-gray-400 hover:text-white text-sm">Terms of Service</a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        // Mobile menu toggle
-        document.getElementById('mobile-menu-button').addEventListener('click', function() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
-        });
-
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                    
-                    // Close mobile menu if open
-                    const mobileMenu = document.getElementById('mobile-menu');
-                    if (!mobileMenu.classList.contains('hidden')) {
-                        mobileMenu.classList.add('hidden');
-                    }
-                }
-            });
-        });
-
-        // Form submission
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Thank you for your message! I will get back to you soon.');
-            this.reset();
-        });
-    </script>
-</body>
-</html>
+  );
+}
