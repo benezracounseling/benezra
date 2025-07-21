@@ -83,12 +83,22 @@
       margin-bottom: 0.3rem;
       text-shadow: 0 0 6px #1ab7ea;
     }
-    header p {
+    header p.subtitle {
       font-size: 1.25rem;
       font-weight: 500;
       font-style: italic;
       color: #aad8ffcc;
       text-shadow: 0 0 4px #0ea0d9cc;
+      margin-bottom: 1rem;
+    }
+    header p.story {
+      max-width: 720px;
+      margin: 0 auto;
+      font-size: 1.05rem;
+      font-weight: 400;
+      line-height: 1.6;
+      color: #c0dffcdd;
+      user-select: text;
     }
 
     /* ========== MAIN CONTENT ========== */
@@ -239,13 +249,18 @@
 <body>
   <header>
     <h1>BurgerQuest LA 🍔</h1>
-    <p>The Ultimate Burger Reviews from our LA Adventures — 16 Burgers, 16 Stories</p>
+    <p class="subtitle">The Ultimate Burger Reviews from Zach, Sagiv, &amp; Nathan's LA Adventures</p>
+    <p class="story">
+      Three friends – Zach, Sagiv, and Nathan – set off on an epic journey throughout Los Angeles to find the absolute best burger the city has to offer.
+      Armed with a shared love of juicy patties, crispy bacon, and melty cheese, they criss-crossed the town, tasting, rating, and joking their way through 16 incredible burger joints.
+      This site chronicles their delicious discoveries, memorable stories, and honest scores. Join their quest and see who really takes the burger crown!
+    </p>
   </header>
 
   <main>
     <!-- Reviews Section -->
     <section aria-labelledby="reviewsTitle">
-      <h2 id="reviewsTitle">Burger Reviews & Scores</h2>
+      <h2 id="reviewsTitle">Burger Reviews &amp; Scores</h2>
       <div id="reviewsGallery" tabindex="0" aria-live="polite">
         <!-- Review cards inserted by JS -->
       </div>
@@ -259,7 +274,7 @@
   </main>
 
   <footer>
-    &copy; 2024 BurgerQuest LA | Designed for the coolest burger hunters in town!
+    &copy; 2024 BurgerQuest LA | Zach, Sagiv &amp; Nathan's epic burger adventure!
   </footer>
 
   <!-- Leaflet JS for map -->
