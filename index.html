@@ -115,7 +115,7 @@
     }
     #reviewsGallery {
       display: grid;
-      grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
+      grid-template-columns: repeat(auto-fill,minmax(280px,1fr));
       gap: 1.8rem;
     }
     .review-card {
@@ -149,6 +149,16 @@
       user-select: none;
     }
 
+    /* Joint name */
+    .joint-name {
+      font-weight: 700;
+      font-size: 1.15rem;
+      margin-bottom: 0.35rem;
+      color: #1ab7ea;
+      text-shadow: 0 0 6px #0ea0d9;
+      user-select: text;
+    }
+
     /* Review text */
     .review-text {
       flex-grow: 1;
@@ -159,23 +169,14 @@
       user-select: text;
     }
 
-    /* Reviewer rating */
-    .rating {
+    /* Reviewer score */
+    .score {
       align-self: flex-start;
       font-size: 1.1rem;
-      font-weight: 800;
+      font-weight: 700;
       color: #ffd600;
       text-shadow: 0 0 5px #bba500;
       user-select: none;
-    }
-
-    /* Star styles */
-    .star {
-      color: #ffd600;
-      font-size: 1.3rem;
-      margin-right: 2px;
-      line-height: 1;
-      display: inline-block;
     }
 
     /* ========== MAP SECTION ========== */
@@ -270,118 +271,134 @@
 
   <script>
     // ====== BURGER REVIEWS DATA ======
-    // 16 general burger reviews with scores (1-5 stars)
-    // Replace image paths and reviews with your own!
+    // 16 general burger reviews with joint names and scores (0-10 scale)
+    // Replace image paths, joint names, and reviews with your own!
     const reviews = [
       {
         img: 'photos/burger1.jpg',
         alt: 'Closeup of double cheeseburger with lettuce and tomato',
-        review: "The perfect balance of juicy patty and fresh veggies. Hands down a 5-star experience!",
-        score: 5
+        joint: "Downtown Grill",
+        review: "The perfect balance of juicy patty and fresh veggies. Hands down a 10/10 experience!",
+        score: 10
       },
       {
         img: 'photos/burger2.jpg',
         alt: 'Burger stacked with melted cheese and bacon',
+        joint: "Beverly Buns",
         review: "Crispy bacon took this burger to the next level. The cheese was so creamy and melted perfectly.",
-        score: 4
+        score: 9
       },
       {
         img: 'photos/burger3.jpg',
         alt: 'Classic cheeseburger with pickles and onions',
+        joint: "Grand Central Burgers",
         review: "Delicious classic flavor, though the patty was slightly overcooked. Still well worth it.",
-        score: 4
+        score: 8
       },
       {
         img: 'photos/burger4.jpg',
         alt: 'Spicy burger with jalapeños and pepper jack cheese',
+        joint: "Spice Stack",
         review: "A fiery delight! Loved the heat and creaminess combo, but maybe a bit too spicy for some.",
-        score: 4
+        score: 8
       },
       {
         img: 'photos/burger5.jpg',
         alt: 'Veggie burger topped with avocado slices',
+        joint: "Green Bite",
         review: "Who says veggie burgers can't be indulgent? Creamy avocado made it unforgettable.",
-        score: 5
+        score: 10
       },
       {
         img: 'photos/burger6.jpg',
         alt: 'Burger with fried egg and crispy bacon',
+        joint: "Morning Patty",
         review: "Breakfast meets burger! The runny egg sauce was divine with the smoky bacon.",
-        score: 5
+        score: 10
       },
       {
         img: 'photos/burger7.jpg',
         alt: 'Sliders variety platter with different sauces',
+        joint: "Slider Station",
         review: "Perfect for sharing! Each slider brought something unique to the table.",
-        score: 4
+        score: 9
       },
       {
         img: 'photos/burger8.jpg',
         alt: 'BBQ burger with onion rings',
+        joint: "Ring & Grill",
         review: "BBQ sauce packed with flavor and crispy onion rings made it extra crunchy and tasty.",
-        score: 4
+        score: 8
       },
       {
         img: 'photos/burger9.jpg',
         alt: 'Burger with blue cheese and caramelized onions',
+        joint: "Bold Buns",
         review: "Bold choice! The blue cheese added a lovely tanginess to the rich patty.",
-        score: 3
+        score: 7
       },
       {
         img: 'photos/burger10.jpg',
         alt: 'Cheeseburger with fresh arugula and pesto',
+        joint: "Fresh Greens Burger",
         review: "Fresh and herbaceous — the pesto was a game changer in this burger.",
-        score: 5
+        score: 10
       },
       {
         img: 'photos/burger11.jpg',
         alt: 'Double patty bacon burger with cheddar',
+        joint: "Meat Feast",
         review: "Meat lovers rejoice! Double patties stacked with crispy bacon and cheddar cheese.",
-        score: 5
+        score: 10
       },
       {
         img: 'photos/burger12.jpg',
         alt: 'Burger with grilled mushrooms and swiss cheese',
+        joint: "Swiss & Shrooms",
         review: "Earthy mushrooms paired perfectly with smooth Swiss; very satisfying taste profile.",
-        score: 4
+        score: 9
       },
       {
         img: 'photos/burger13.jpg',
         alt: 'Chili burger with cheese sauce',
+        joint: "Chili Shack",
         review: "Spicy chili and gooey cheese make this a comfort classic. Loved every bite!",
-        score: 4
+        score: 9
       },
       {
         img: 'photos/burger14.jpg',
         alt: 'Classic burger with ketchup and mustard',
+        joint: "Classic Corner",
         review: "Simple but effective — sometimes you just want that nostalgic classic burger taste.",
-        score: 3
+        score: 7
       },
       {
         img: 'photos/burger15.jpg',
         alt: 'Turkey burger with cranberry sauce',
+        joint: "Turkey Time",
         review: "A fresh twist on the usual burger. Tart cranberry balanced lean turkey wonderfully.",
-        score: 4
+        score: 8
       },
       {
         img: 'photos/burger16.jpg',
         alt: 'Loaded bacon and cheese burger with fries',
+        joint: "Bacon & Cheese Deluxe",
         review: "Indulgent and loaded with toppings, this burger was pure joy with crispy fries on side.",
-        score: 5
+        score: 10
       },
     ];
 
     // ====== BURGER SPOTS FOR MAP ======
     // General burger spots around LA for the journey
     const burgerSpots = [
-      { name: "Burger Spot 1", coords: [34.052235, -118.243683], desc: 'Downtown juicy delight' },
-      { name: "Burger Spot 2", coords: [34.080641, -118.374239], desc: 'Beverly Hills gourmet' },
-      { name: "Burger Spot 3", coords: [34.053690, -118.242766], desc: 'Grand Central stacks' },
-      { name: "Burger Spot 4", coords: [34.069008, -118.441154], desc: 'UCLA burger quest' },
-      { name: "Burger Spot 5", coords: [34.076234, -118.260181], desc: 'Bacon bonanza' },
-      { name: "Burger Spot 6", coords: [34.100593, -118.326530], desc: 'Veggie delight' },
-      { name: "Burger Spot 7", coords: [34.015136, -118.496537], desc: 'Spicy bite' },
-      { name: "Burger Spot 8", coords: [34.138116, -118.353378], desc: 'Classic corner' },
+      { name: "Downtown Grill", coords: [34.052235, -118.243683], desc: 'Juicy delights in Downtown' },
+      { name: "Beverly Buns", coords: [34.080641, -118.374239], desc: 'Gourmet patties in Beverly Hills' },
+      { name: "Grand Central Burgers", coords: [34.053690, -118.242766], desc: 'Stacks near Grand Central Market' },
+      { name: "Spice Stack", coords: [34.069008, -118.441154], desc: 'Spicy goodness near UCLA' },
+      { name: "Green Bite", coords: [34.076234, -118.260181], desc: 'Veggie heaven' },
+      { name: "Morning Patty", coords: [34.100593, -118.326530], desc: 'Breakfast inspired burger' },
+      { name: "Slider Station", coords: [34.015136, -118.496537], desc: 'A variety of sliders' },
+      { name: "Ring & Grill", coords: [34.138116, -118.353378], desc: 'BBQ and onion rings' },
     ];
 
     // ====== DOM ELEMENTS ======
@@ -394,17 +411,15 @@
         const card = document.createElement('article');
         card.classList.add('review-card');
         card.tabIndex = 0;
-        card.setAttribute('aria-label', `Burger review ${i + 1} with score ${rev.score} stars`);
-
-        // Create stars string
-        const stars = '★'.repeat(rev.score) + '☆'.repeat(5 - rev.score);
+        card.setAttribute('aria-label', `Burger review ${i + 1} from ${rev.joint} with score ${rev.score} out of 10`);
 
         card.innerHTML = `
           <div class="review-photo">
             <img src="${rev.img}" alt="${rev.alt}" loading="lazy" />
           </div>
+          <div class="joint-name">${rev.joint}</div>
           <p class="review-text">"${rev.review}"</p>
-          <div class="rating" aria-live="polite" aria-atomic="true" aria-label="Rating: ${rev.score} out of 5 stars">${stars}</div>
+          <div class="score" aria-live="polite" aria-atomic="true">Score: ${rev.score} / 10</div>
         `;
         reviewsGallery.appendChild(card);
       });
@@ -448,7 +463,6 @@
         <small style="color:#aad8ffcc;">${spot.desc}</small>
       `);
     });
-
   </script>
 </body>
 </html>
