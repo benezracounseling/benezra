@@ -1,149 +1,228 @@
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Burger Quest LA 🍔</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: sans-serif;
+        background: linear-gradient(to bottom right, #0f172a, #1e293b);
+        color: white;
+      }
 
-const burgerSpots = [
-  {
-    name: "Burgerlords",
-    description: "Crispy edges, vegan option that slaps, hipster-approved.",
-    rating: 4.5,
-    location: "Chinatown, LA",
-    img: "/assets/burger1.jpg", // <-- fixed path
-  },
-  {
-    name: "Father's Office",
-    description: "No ketchup allowed. Still elite.",
-    rating: 4.8,
-    location: "Santa Monica, LA",
-    img: "/assets/burger2.jpg", // <-- fixed path
-  },
-];
+      .tab-button {
+        background: #334155;
+        border: none;
+        border-radius: 0.75rem;
+        padding: 0.5rem 1rem;
+        color: white;
+        cursor: pointer;
+        font-size: 1rem;
+        margin: 0.25rem;
+      }
 
-const friends = [
-  {
-    name: "Zach",
-    bio: "Burger brawler and spice chaser. Once ate five in one day.",
-  },
-  {
-    name: "Nathan",
-    bio: "The critic. Brings a notebook to every bite.",
-  },
-  {
-    name: "Sagiv",
-    bio: "Sauce sommelier. Can detect aioli from across the street.",
-  },
-];
+      .card {
+        background: #1e293b;
+        border-radius: 1rem;
+        overflow: hidden;
+        border: 1px solid #334155;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
 
-export default function BurgerJourney() {
-  const [tab, setTab] = useState("photos");
+      .grid {
+        display: grid;
+        gap: 1.5rem;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      }
 
-  const tabClasses = (active) =>
-    `px-5 py-2 rounded-xl transition duration-300 ease-in-out text-white ${
-      active ? "bg-sky-600" : "bg-sky-500 hover:bg-sky-600"
-    }`;
+      .button-group {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-sky-50 via-white to-sky-100 text-slate-800 px-6 py-10 font-sans">
-      <h1 className="text-4xl md:text-6xl font-extrabold text-center text-sky-600 mb-4">
-        🍔 Burger Quest: LA
-      </h1>
-      <p className="text-center mb-10 text-lg md:text-xl max-w-2xl mx-auto text-slate-600">
-        Three brave friends. One greasy mission: to crown the ultimate burger in Los Angeles. Join Zach, Nathan, and Sagiv as they chew their way to glory.
-      </p>
+    <!-- React & ReactDOM via CDN -->
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
 
-      <div className="flex flex-wrap justify-center gap-4 mb-8">
-        <button onClick={() => setTab("photos")} className={tabClasses(tab === "photos")}>
-          🍔 Burger Wall
-        </button>
-        <button onClick={() => setTab("about")} className={tabClasses(tab === "about")}>
-          🤪 Meet the Crew
-        </button>
-        <button onClick={() => setTab("map")} className={tabClasses(tab === "map")}>
-          📍 Burger Map
-        </button>
-        <a
-          href="https://nathanreviews.example.com"
-          className="px-5 py-2 rounded-xl bg-sky-500 hover:bg-sky-600 text-white transition duration-300"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          📝 Nathan's Reviews
-        </a>
-      </div>
+    <!-- Your App Script -->
+    <script type="text/javascript">
+      const { useState } = React;
 
-      <AnimatePresence mode="wait">
-        {tab === "photos" && (
-          <motion.div
-            key="photos"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.4 }}
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8"
-          >
-            {burgerSpots.map((spot, index) => (
-              <motion.div
-                key={index}
-                className="bg-white rounded-2xl overflow-hidden shadow-xl border border-sky-100"
-                whileHover={{ scale: 1.03 }}
-              >
-                <img src={spot.img} alt={spot.name} className="w-full h-56 object-cover" />
-                <div className="p-4">
-                  <h2 className="text-xl font-semibold text-sky-600 mb-1">{spot.name}</h2>
-                  <p className="text-sm text-slate-600 mb-1">{spot.description}</p>
-                  <p className="text-yellow-500">⭐ {spot.rating} / 5</p>
-                  <p className="text-xs text-slate-400 mt-1">📍 {spot.location}</p>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        )}
+      const burgerSpots = [
+        {
+          name: "Burgerlords",
+          description:
+            "Crispy edges, vegan option that slaps, hipster-approved.",
+          rating: 4.5,
+          location: "Chinatown, LA",
+          img: "./assets/burger1.jpg",
+        },
+        {
+          name: "Father's Office",
+          description: "No ketchup allowed. Still elite.",
+          rating: 4.8,
+          location: "Santa Monica, LA",
+          img: "./assets/burger2.jpg",
+        },
+        // Add more burgers here
+      ];
 
-        {tab === "about" && (
-          <motion.div
-            key="about"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4"
-          >
-            {friends.map((friend, index) => (
-              <div
-                key={index}
-                className="bg-white border border-sky-100 rounded-2xl shadow-md text-center p-6"
-              >
-                <div className="text-5xl mb-3">😎</div>
-                <h3 className="text-2xl font-bold text-sky-600 mb-2">{friend.name}</h3>
-                <p className="text-slate-600 text-sm">{friend.bio}</p>
-              </div>
-            ))}
-          </motion.div>
-        )}
+      const friends = [
+        {
+          name: "Zach",
+          bio: "Burger brawler and spice chaser. Once ate five in one day.",
+        },
+        {
+          name: "Nathan",
+          bio: "The critic. Brings a notebook to every bite.",
+        },
+        {
+          name: "Sagiv",
+          bio: "Sauce sommelier. Can detect aioli from across the street.",
+        },
+      ];
 
-        {tab === "map" && (
-          <motion.div
-            key="map"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="mt-10"
-          >
-            <iframe
-              title="Burger Map LA"
-              src="https://www.google.com/maps/d/embed?mid=1FqWhmpQ2x1G8z3wL1hZcYrQsNN_Qzv0&hl=en"
-              width="100%"
-              height="480"
-              className="rounded-xl border border-sky-200 shadow-lg"
-              loading="lazy"
-            ></iframe>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      function BurgerJourney() {
+        const [tab, setTab] = useState("photos");
 
-      <footer className="text-center text-sm text-slate-500 mt-16">
-        &copy; {new Date().getFullYear()} Burger Quest LA. No diets were harmed in the making.
-      </footer>
-    </div>
-  );
-}
+        return React.createElement(
+          "div",
+          { style: { padding: "2rem" } },
+          React.createElement(
+            "h1",
+            {
+              style: {
+                fontSize: "2.5rem",
+                textAlign: "center",
+                marginBottom: "1rem",
+                color: "#22d3ee",
+              },
+            },
+            "🍔 The Burger Quest: LA"
+          ),
+          React.createElement(
+            "p",
+            {
+              style: {
+                textAlign: "center",
+                marginBottom: "2rem",
+                color: "#cbd5e1",
+                maxWidth: "600px",
+                marginInline: "auto",
+              },
+            },
+            "Three brave friends. One greasy mission: to crown the ultimate burger in Los Angeles. Join Zach, Nathan, and Sagiv as they chew their way to glory."
+          ),
+          React.createElement(
+            "div",
+            { className: "button-group" },
+            ["photos", "about", "map"].map((t) =>
+              React.createElement(
+                "button",
+                {
+                  className: "tab-button",
+                  onClick: () => setTab(t),
+                  key: t,
+                },
+                t === "photos"
+                  ? "🍔 Burger Wall"
+                  : t === "about"
+                  ? "🤪 Meet the Crew"
+                  : "📍 Burger Map"
+              )
+            )
+          ),
+          tab === "photos" &&
+            React.createElement(
+              "div",
+              { className: "grid" },
+              burgerSpots.map((spot, i) =>
+                React.createElement(
+                  "div",
+                  { className: "card", key: i },
+                  React.createElement("img", {
+                    src: spot.img,
+                    alt: spot.name,
+                    style: { width: "100%", height: "200px", objectFit: "cover" },
+                  }),
+                  React.createElement(
+                    "div",
+                    { style: { padding: "1rem" } },
+                    React.createElement(
+                      "h2",
+                      { style: { fontSize: "1.25rem", color: "#67e8f9" } },
+                      spot.name
+                    ),
+                    React.createElement("p", { style: { color: "#cbd5e1" } }, spot.description),
+                    React.createElement("p", { style: { color: "#facc15" } }, `⭐ ${spot.rating} / 5`),
+                    React.createElement("p", { style: { color: "#94a3b8", fontSize: "0.875rem" } }, `📍 ${spot.location}`)
+                  )
+                )
+              )
+            ),
+          tab === "about" &&
+            React.createElement(
+              "div",
+              { className: "grid", style: { marginTop: "1rem" } },
+              friends.map((friend, i) =>
+                React.createElement(
+                  "div",
+                  { className: "card", key: i },
+                  React.createElement(
+                    "div",
+                    { style: { padding: "1rem", textAlign: "center" } },
+                    React.createElement("div", { style: { fontSize: "2rem" } }, "😎"),
+                    React.createElement("h3", { style: { fontSize: "1.125rem", color: "#67e8f9" } }, friend.name),
+                    React.createElement("p", { style: { color: "#cbd5e1" } }, friend.bio)
+                  )
+                )
+              )
+            ),
+          tab === "map" &&
+            React.createElement(
+              "div",
+              { style: { marginTop: "2rem" } },
+              React.createElement("iframe", {
+                title: "Burger Map LA",
+                src: "https://www.google.com/maps/d/embed?mid=1FqWhmpQ2x1G8z3wL1hZcYrQsNN_Qzv0&hl=en",
+                width: "100%",
+                height: "480",
+                style: { borderRadius: "1rem", border: "1px solid #334155" },
+                loading: "lazy",
+              })
+            ),
+          React.createElement(
+            "footer",
+            {
+              style: {
+                textAlign: "center",
+                fontSize: "0.75rem",
+                color: "#94a3b8",
+                marginTop: "4rem",
+              },
+            },
+            `© ${new Date().getFullYear()} Burger Quest LA. No diets were harmed in the making.`
+          )
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById("root")).render(
+        React.createElement(BurgerJourney)
+      );
+    </script>
+  </body>
+</html>
