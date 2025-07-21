@@ -1,228 +1,454 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Burger Quest LA 🍔</title>
-    <style>
-      body {
-        margin: 0;
-        font-family: sans-serif;
-        background: linear-gradient(to bottom right, #0f172a, #1e293b);
-        color: white;
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BurgerQuest LA 🍔 | The Ultimate Burger Reviews</title>
+  <!-- Leaflet CSS for interactive map -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-sA+eP6sT7hKs/YxNmoLDXuZ2Y+urBlbPXR18VW4H0Mo="
+    crossorigin=""
+  />
+  <style>
+    /* ========== RESET & BASE ========== */
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #e0e6f2;
+      line-height: 1.5;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    a {
+      color: #1ab7ea;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    img {
+      max-width: 100%;
+      display: block;
+      border-radius: 14px;
+      cursor: pointer;
+      box-shadow: 0 6px 14px rgba(26, 183, 234, 0.6);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    img:hover {
+      transform: scale(1.08);
+      box-shadow: 0 12px 24px rgba(26, 183, 234, 0.9);
+    }
+    button {
+      cursor: pointer;
+      background-color: #1ab7ea;
+      border: none;
+      color: #0f2027;
+      padding: 0.65rem 1.4rem;
+      border-radius: 30px;
+      font-weight: 700;
+      box-shadow: 0 5px 15px rgba(26, 183, 234, 0.75);
+      margin: 0.4rem;
+      user-select: none;
+      transition: background-color 0.25s ease, box-shadow 0.3s ease;
+    }
+    button:hover, button:focus {
+      background-color: #0ea0d9;
+      box-shadow: 0 8px 22px rgba(14, 160, 217, 0.85);
+      outline: none;
+    }
+
+    /* ========== HEADER ========== */
+    header {
+      background: #0a3d62;
+      padding: 2rem 2rem 2.5rem 2rem;
+      text-align: center;
+      color: #1ab7ea;
+      box-shadow: 0 3px 12px rgba(10, 61, 98, 0.9);
+      user-select: none;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    header h1 {
+      font-size: 2.8rem;
+      letter-spacing: 0.15em;
+      font-weight: 900;
+      margin-bottom: 0.3rem;
+      text-shadow: 0 0 6px #1ab7ea;
+    }
+    header p {
+      font-size: 1.25rem;
+      font-weight: 500;
+      font-style: italic;
+      color: #aad8ffcc;
+      text-shadow: 0 0 4px #0ea0d9cc;
+    }
+
+    /* ========== MAIN CONTENT ========== */
+    main {
+      flex: 1;
+      max-width: 1100px;
+      margin: 2rem auto 5rem auto;
+      padding: 0 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+    }
+
+    /* ========== REVIEWS GALLERY ========== */
+    #reviewsTitle {
+      text-align: center;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #1ab7ea;
+      text-shadow: 0 0 7px #0ea0d9;
+      letter-spacing: 0.1em;
+      margin-bottom: 1.5rem;
+      user-select: none;
+    }
+    #reviewsGallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
+      gap: 1.8rem;
+    }
+    .review-card {
+      background: rgba(26, 183, 234, 0.15);
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(10, 61, 98, 0.55);
+      padding: 1.4rem 1rem 1rem 1rem;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      color: #c4e0fc;
+    }
+    .review-card:hover, .review-card:focus-within {
+      transform: translateY(-6px);
+      box-shadow: 0 18px 40px rgba(26, 183, 234, 0.9);
+      outline: none;
+    }
+
+    /* Photo area */
+    .review-photo {
+      overflow: hidden;
+      border-radius: 14px;
+      box-shadow: 0 5px 20px rgba(26, 183, 234, 0.5);
+      margin-bottom: 1rem;
+    }
+    .review-photo img {
+      border-radius: 14px;
+      height: 160px;
+      object-fit: cover;
+      width: 100%;
+      user-select: none;
+    }
+
+    /* Review text */
+    .review-text {
+      flex-grow: 1;
+      font-size: 0.95rem;
+      font-style: italic;
+      margin-bottom: 1rem;
+      color: #d7e9ffcc;
+      user-select: text;
+    }
+
+    /* Reviewer rating */
+    .rating {
+      align-self: flex-start;
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #ffd600;
+      text-shadow: 0 0 5px #bba500;
+      user-select: none;
+    }
+
+    /* Star styles */
+    .star {
+      color: #ffd600;
+      font-size: 1.3rem;
+      margin-right: 2px;
+      line-height: 1;
+      display: inline-block;
+    }
+
+    /* ========== MAP SECTION ========== */
+    #mapSection {
+      margin: 0 auto;
+      max-width: 1080px;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 12px 30px rgba(26, 183, 234, 0.7);
+      user-select: none;
+      background: #102f44cc;
+      padding: 1rem;
+    }
+    h2#mapTitle {
+      text-align: center;
+      margin-bottom: 1rem;
+      font-size: 2rem;
+      color: #1ab7ea;
+      letter-spacing: 0.1em;
+      text-shadow: 0 0 7px #0ea0d9;
+      user-select: none;
+    }
+    #map {
+      height: 480px;
+      border-radius: 14px;
+    }
+
+    /* ========== FOOTER ========== */
+    footer {
+      background: #0a3d62;
+      color: #1ab7ea;
+      text-align: center;
+      padding: 1.2rem 1rem;
+      font-size: 0.95rem;
+      user-select: none;
+      box-shadow: 0 -3px 10px rgba(10, 61, 98, 0.9);
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 480px) {
+      header h1 {
+        font-size: 2rem;
       }
-
-      .tab-button {
-        background: #334155;
-        border: none;
-        border-radius: 0.75rem;
-        padding: 0.5rem 1rem;
-        color: white;
-        cursor: pointer;
-        font-size: 1rem;
-        margin: 0.25rem;
+      #reviewsGallery {
+        grid-template-columns: repeat(auto-fill,minmax(160px,1fr));
+        gap: 1.2rem;
       }
-
-      .card {
-        background: #1e293b;
-        border-radius: 1rem;
-        overflow: hidden;
-        border: 1px solid #334155;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      .review-photo img {
+        height: 120px;
       }
-
-      .grid {
-        display: grid;
-        gap: 1.5rem;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      main {
+        margin: 1.5rem auto 3.5rem auto;
+        padding: 0 0.7rem;
       }
+    }
+  </style>
+  <!-- Google Fonts Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <header>
+    <h1>BurgerQuest LA 🍔</h1>
+    <p>The Ultimate Burger Reviews from our LA Adventures — 16 Burgers, 16 Stories</p>
+  </header>
 
-      .button-group {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        margin-bottom: 2rem;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="root"></div>
+  <main>
+    <!-- Reviews Section -->
+    <section aria-labelledby="reviewsTitle">
+      <h2 id="reviewsTitle">Burger Reviews & Scores</h2>
+      <div id="reviewsGallery" tabindex="0" aria-live="polite">
+        <!-- Review cards inserted by JS -->
+      </div>
+    </section>
 
-    <!-- React & ReactDOM via CDN -->
-    <script
-      crossorigin
-      src="https://unpkg.com/react@18/umd/react.development.js"
-    ></script>
-    <script
-      crossorigin
-      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
-    ></script>
+    <!-- Map Section -->
+    <section id="mapSection" aria-label="Map of burger stops in Los Angeles">
+      <h2 id="mapTitle">Map of Burger Stops Around LA</h2>
+      <div id="map" role="application" aria-roledescription="interactive map"></div>
+    </section>
+  </main>
 
-    <!-- Your App Script -->
-    <script type="text/javascript">
-      const { useState } = React;
+  <footer>
+    &copy; 2024 BurgerQuest LA | Designed for the coolest burger hunters in town!
+  </footer>
 
-      const burgerSpots = [
-        {
-          name: "Burgerlords",
-          description:
-            "Crispy edges, vegan option that slaps, hipster-approved.",
-          rating: 4.5,
-          location: "Chinatown, LA",
-          img: "./assets/burger1.jpg",
-        },
-        {
-          name: "Father's Office",
-          description: "No ketchup allowed. Still elite.",
-          rating: 4.8,
-          location: "Santa Monica, LA",
-          img: "./assets/burger2.jpg",
-        },
-        // Add more burgers here
-      ];
+  <!-- Leaflet JS for map -->
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-pMJOTmssZNVws1ih5JhvoUMVGNs47yrtvXgZMjXdCtw="
+    crossorigin=""
+  ></script>
 
-      const friends = [
-        {
-          name: "Zach",
-          bio: "Burger brawler and spice chaser. Once ate five in one day.",
-        },
-        {
-          name: "Nathan",
-          bio: "The critic. Brings a notebook to every bite.",
-        },
-        {
-          name: "Sagiv",
-          bio: "Sauce sommelier. Can detect aioli from across the street.",
-        },
-      ];
+  <script>
+    // ====== BURGER REVIEWS DATA ======
+    // 16 general burger reviews with scores (1-5 stars)
+    // Replace image paths and reviews with your own!
+    const reviews = [
+      {
+        img: 'photos/burger1.jpg',
+        alt: 'Closeup of double cheeseburger with lettuce and tomato',
+        review: "The perfect balance of juicy patty and fresh veggies. Hands down a 5-star experience!",
+        score: 5
+      },
+      {
+        img: 'photos/burger2.jpg',
+        alt: 'Burger stacked with melted cheese and bacon',
+        review: "Crispy bacon took this burger to the next level. The cheese was so creamy and melted perfectly.",
+        score: 4
+      },
+      {
+        img: 'photos/burger3.jpg',
+        alt: 'Classic cheeseburger with pickles and onions',
+        review: "Delicious classic flavor, though the patty was slightly overcooked. Still well worth it.",
+        score: 4
+      },
+      {
+        img: 'photos/burger4.jpg',
+        alt: 'Spicy burger with jalapeños and pepper jack cheese',
+        review: "A fiery delight! Loved the heat and creaminess combo, but maybe a bit too spicy for some.",
+        score: 4
+      },
+      {
+        img: 'photos/burger5.jpg',
+        alt: 'Veggie burger topped with avocado slices',
+        review: "Who says veggie burgers can't be indulgent? Creamy avocado made it unforgettable.",
+        score: 5
+      },
+      {
+        img: 'photos/burger6.jpg',
+        alt: 'Burger with fried egg and crispy bacon',
+        review: "Breakfast meets burger! The runny egg sauce was divine with the smoky bacon.",
+        score: 5
+      },
+      {
+        img: 'photos/burger7.jpg',
+        alt: 'Sliders variety platter with different sauces',
+        review: "Perfect for sharing! Each slider brought something unique to the table.",
+        score: 4
+      },
+      {
+        img: 'photos/burger8.jpg',
+        alt: 'BBQ burger with onion rings',
+        review: "BBQ sauce packed with flavor and crispy onion rings made it extra crunchy and tasty.",
+        score: 4
+      },
+      {
+        img: 'photos/burger9.jpg',
+        alt: 'Burger with blue cheese and caramelized onions',
+        review: "Bold choice! The blue cheese added a lovely tanginess to the rich patty.",
+        score: 3
+      },
+      {
+        img: 'photos/burger10.jpg',
+        alt: 'Cheeseburger with fresh arugula and pesto',
+        review: "Fresh and herbaceous — the pesto was a game changer in this burger.",
+        score: 5
+      },
+      {
+        img: 'photos/burger11.jpg',
+        alt: 'Double patty bacon burger with cheddar',
+        review: "Meat lovers rejoice! Double patties stacked with crispy bacon and cheddar cheese.",
+        score: 5
+      },
+      {
+        img: 'photos/burger12.jpg',
+        alt: 'Burger with grilled mushrooms and swiss cheese',
+        review: "Earthy mushrooms paired perfectly with smooth Swiss; very satisfying taste profile.",
+        score: 4
+      },
+      {
+        img: 'photos/burger13.jpg',
+        alt: 'Chili burger with cheese sauce',
+        review: "Spicy chili and gooey cheese make this a comfort classic. Loved every bite!",
+        score: 4
+      },
+      {
+        img: 'photos/burger14.jpg',
+        alt: 'Classic burger with ketchup and mustard',
+        review: "Simple but effective — sometimes you just want that nostalgic classic burger taste.",
+        score: 3
+      },
+      {
+        img: 'photos/burger15.jpg',
+        alt: 'Turkey burger with cranberry sauce',
+        review: "A fresh twist on the usual burger. Tart cranberry balanced lean turkey wonderfully.",
+        score: 4
+      },
+      {
+        img: 'photos/burger16.jpg',
+        alt: 'Loaded bacon and cheese burger with fries',
+        review: "Indulgent and loaded with toppings, this burger was pure joy with crispy fries on side.",
+        score: 5
+      },
+    ];
 
-      function BurgerJourney() {
-        const [tab, setTab] = useState("photos");
+    // ====== BURGER SPOTS FOR MAP ======
+    // General burger spots around LA for the journey
+    const burgerSpots = [
+      { name: "Burger Spot 1", coords: [34.052235, -118.243683], desc: 'Downtown juicy delight' },
+      { name: "Burger Spot 2", coords: [34.080641, -118.374239], desc: 'Beverly Hills gourmet' },
+      { name: "Burger Spot 3", coords: [34.053690, -118.242766], desc: 'Grand Central stacks' },
+      { name: "Burger Spot 4", coords: [34.069008, -118.441154], desc: 'UCLA burger quest' },
+      { name: "Burger Spot 5", coords: [34.076234, -118.260181], desc: 'Bacon bonanza' },
+      { name: "Burger Spot 6", coords: [34.100593, -118.326530], desc: 'Veggie delight' },
+      { name: "Burger Spot 7", coords: [34.015136, -118.496537], desc: 'Spicy bite' },
+      { name: "Burger Spot 8", coords: [34.138116, -118.353378], desc: 'Classic corner' },
+    ];
 
-        return React.createElement(
-          "div",
-          { style: { padding: "2rem" } },
-          React.createElement(
-            "h1",
-            {
-              style: {
-                fontSize: "2.5rem",
-                textAlign: "center",
-                marginBottom: "1rem",
-                color: "#22d3ee",
-              },
-            },
-            "🍔 The Burger Quest: LA"
-          ),
-          React.createElement(
-            "p",
-            {
-              style: {
-                textAlign: "center",
-                marginBottom: "2rem",
-                color: "#cbd5e1",
-                maxWidth: "600px",
-                marginInline: "auto",
-              },
-            },
-            "Three brave friends. One greasy mission: to crown the ultimate burger in Los Angeles. Join Zach, Nathan, and Sagiv as they chew their way to glory."
-          ),
-          React.createElement(
-            "div",
-            { className: "button-group" },
-            ["photos", "about", "map"].map((t) =>
-              React.createElement(
-                "button",
-                {
-                  className: "tab-button",
-                  onClick: () => setTab(t),
-                  key: t,
-                },
-                t === "photos"
-                  ? "🍔 Burger Wall"
-                  : t === "about"
-                  ? "🤪 Meet the Crew"
-                  : "📍 Burger Map"
-              )
-            )
-          ),
-          tab === "photos" &&
-            React.createElement(
-              "div",
-              { className: "grid" },
-              burgerSpots.map((spot, i) =>
-                React.createElement(
-                  "div",
-                  { className: "card", key: i },
-                  React.createElement("img", {
-                    src: spot.img,
-                    alt: spot.name,
-                    style: { width: "100%", height: "200px", objectFit: "cover" },
-                  }),
-                  React.createElement(
-                    "div",
-                    { style: { padding: "1rem" } },
-                    React.createElement(
-                      "h2",
-                      { style: { fontSize: "1.25rem", color: "#67e8f9" } },
-                      spot.name
-                    ),
-                    React.createElement("p", { style: { color: "#cbd5e1" } }, spot.description),
-                    React.createElement("p", { style: { color: "#facc15" } }, `⭐ ${spot.rating} / 5`),
-                    React.createElement("p", { style: { color: "#94a3b8", fontSize: "0.875rem" } }, `📍 ${spot.location}`)
-                  )
-                )
-              )
-            ),
-          tab === "about" &&
-            React.createElement(
-              "div",
-              { className: "grid", style: { marginTop: "1rem" } },
-              friends.map((friend, i) =>
-                React.createElement(
-                  "div",
-                  { className: "card", key: i },
-                  React.createElement(
-                    "div",
-                    { style: { padding: "1rem", textAlign: "center" } },
-                    React.createElement("div", { style: { fontSize: "2rem" } }, "😎"),
-                    React.createElement("h3", { style: { fontSize: "1.125rem", color: "#67e8f9" } }, friend.name),
-                    React.createElement("p", { style: { color: "#cbd5e1" } }, friend.bio)
-                  )
-                )
-              )
-            ),
-          tab === "map" &&
-            React.createElement(
-              "div",
-              { style: { marginTop: "2rem" } },
-              React.createElement("iframe", {
-                title: "Burger Map LA",
-                src: "https://www.google.com/maps/d/embed?mid=1FqWhmpQ2x1G8z3wL1hZcYrQsNN_Qzv0&hl=en",
-                width: "100%",
-                height: "480",
-                style: { borderRadius: "1rem", border: "1px solid #334155" },
-                loading: "lazy",
-              })
-            ),
-          React.createElement(
-            "footer",
-            {
-              style: {
-                textAlign: "center",
-                fontSize: "0.75rem",
-                color: "#94a3b8",
-                marginTop: "4rem",
-              },
-            },
-            `© ${new Date().getFullYear()} Burger Quest LA. No diets were harmed in the making.`
-          )
-        );
-      }
+    // ====== DOM ELEMENTS ======
+    const reviewsGallery = document.getElementById('reviewsGallery');
 
-      ReactDOM.createRoot(document.getElementById("root")).render(
-        React.createElement(BurgerJourney)
-      );
-    </script>
-  </body>
+    // ====== RENDER REVIEWS FUNCTION ======
+    function renderReviews() {
+      reviewsGallery.innerHTML = ''; // Clear existing
+      reviews.forEach((rev, i) => {
+        const card = document.createElement('article');
+        card.classList.add('review-card');
+        card.tabIndex = 0;
+        card.setAttribute('aria-label', `Burger review ${i + 1} with score ${rev.score} stars`);
+
+        // Create stars string
+        const stars = '★'.repeat(rev.score) + '☆'.repeat(5 - rev.score);
+
+        card.innerHTML = `
+          <div class="review-photo">
+            <img src="${rev.img}" alt="${rev.alt}" loading="lazy" />
+          </div>
+          <p class="review-text">"${rev.review}"</p>
+          <div class="rating" aria-live="polite" aria-atomic="true" aria-label="Rating: ${rev.score} out of 5 stars">${stars}</div>
+        `;
+        reviewsGallery.appendChild(card);
+      });
+    }
+
+    renderReviews();
+
+    // ====== LEAFLET MAP INITIALIZATION ======
+    const map = L.map('map', {
+      center: [34.05, -118.25], // Centered LA
+      zoom: 11,
+      maxZoom: 17,
+      minZoom: 10,
+      scrollWheelZoom: false,
+    });
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution:
+        '&copy; <a href="https://openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors',
+    }).addTo(map);
+
+    // Custom blue markers with white stroke
+    function createBlueMarker() {
+      return L.divIcon({
+        html: `<svg xmlns="http://www.w3.org/2000/svg" height="36" width="28" viewBox="0 0 24 32" fill="#1ab7ea" stroke="white" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><path d="M12 0C7.03 0 3 4.06 3 9.09c0 5.85 8.85 17.37 8.97 17.5a1 1 0 0 0 1.06 0c.12-.13 9-11.6 9-17.5C21 4.05 16.97 0 12 0z"/></svg>`,
+        className: '',
+        iconSize: [28, 36],
+        iconAnchor: [14, 36],
+        popupAnchor: [0, -36],
+      });
+    }
+
+    burgerSpots.forEach(spot => {
+      const marker = L.marker(spot.coords, {
+        icon: createBlueMarker(),
+        alt: `Burger Spot: ${spot.name}`,
+      }).addTo(map);
+
+      marker.bindPopup(`
+        <strong style="color:#1ab7ea;">${spot.name}</strong><br />
+        <small style="color:#aad8ffcc;">${spot.desc}</small>
+      `);
+    });
+
+  </script>
+</body>
 </html>
