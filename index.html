@@ -113,8 +113,8 @@
       gap: 3rem;
     }
 
-    /* ========== REVIEWS GALLERY ========== */
-    #reviewsTitle {
+    /* ========== REVIEW SECTION TITLES ========== */
+    .section-title {
       text-align: center;
       font-size: 2.2rem;
       font-weight: 700;
@@ -124,7 +124,9 @@
       margin-bottom: 1.5rem;
       user-select: none;
     }
-    #reviewsGallery {
+
+    /* ========== REVIEWS GALLERY ========== */
+    .reviewsGallery {
       display: grid;
       grid-template-columns: repeat(auto-fill,minmax(280px,1fr));
       gap: 1.8rem;
@@ -160,8 +162,8 @@
       user-select: none;
     }
 
-    /* Joint name */
-    .joint-name {
+    /* Joint/Guest name */
+    .joint-name, .guest-name {
       font-weight: 700;
       font-size: 1.15rem;
       margin-bottom: 0.35rem;
@@ -231,7 +233,7 @@
       header h1 {
         font-size: 2rem;
       }
-      #reviewsGallery {
+      .reviewsGallery {
         grid-template-columns: repeat(auto-fill,minmax(160px,1fr));
         gap: 1.2rem;
       }
@@ -259,12 +261,16 @@
   </header>
 
   <main>
-    <!-- Reviews Section -->
+    <!-- Friends' Reviews Section -->
     <section aria-labelledby="reviewsTitle">
-      <h2 id="reviewsTitle">Burger Reviews &amp; Scores</h2>
-      <div id="reviewsGallery" tabindex="0" aria-live="polite">
-        <!-- Review cards inserted by JS -->
-      </div>
+      <h2 id="reviewsTitle" class="section-title">Burger Reviews &amp; Scores</h2>
+      <div id="reviewsGallery" class="reviewsGallery" tabindex="0" aria-live="polite"></div>
+    </section>
+
+    <!-- Guest Reviews Section -->
+    <section aria-labelledby="guestReviewsTitle" style="margin-top: 3rem;">
+      <h2 id="guestReviewsTitle" class="section-title">Guest Reviews</h2>
+      <div id="guestReviewsGallery" class="reviewsGallery" tabindex="0" aria-live="polite"></div>
     </section>
 
     <!-- Map Section -->
@@ -286,9 +292,7 @@
   ></script>
 
   <script>
-    // ====== BURGER REVIEWS DATA ======
-    // 16 general burger reviews with joint names and scores (0-10 scale)
-    // Replace image paths, joint names, and reviews with your own!
+    // ====== FRIENDS' BURGER REVIEWS DATA ======
     const reviews = [
       {
         img: 'heavy handed.jpg',
@@ -404,6 +408,39 @@
       },
     ];
 
+    // ====== GUEST BURGER REVIEWS DATA ======
+    const guestReviews = [
+      {
+        img: 'photos/guest-burger1.jpg',
+        alt: 'Guest burger with melted cheese and pickles',
+        guest: "Justin.",
+        review: "Amazing flavors, the patty was juicy and cooked perfectly. Would definitely come back!",
+        score: 9
+      },
+      {
+        img: 'photos/guest-burger2.jpg',
+        alt: 'Guest burger with crispy bacon and lettuce',
+        guest: "Ben",
+        review: "The bacon was crispy and the sauce had a great kick. A solid burger experience.",
+        score: 8
+      },
+      {
+        img: 'photos/guest-burger3.jpg',
+        alt: 'Delicious veggie burger with fresh tomatoes',
+        guest: "Noah/Lavi",
+        review: "Loved the veggie option here - flavorful and filling. One of the best veggie burgers in LA!",
+        score: 10
+      },
+      {
+        img: 'photos/guest-burger4.jpg',
+        alt: 'Cheeseburger with grilled onions',
+        guest: "Saanvi",
+        review: "Grilled onions added a sweet depth. The bun was a bit dry though but overall great taste.",
+        score: 7
+      },
+      // Add more guest reviews as needed, up to 16
+    ];
+
     // ====== BURGER SPOTS FOR MAP ======
     // General burger spots around LA for the journey
     const burgerSpots = [
@@ -419,10 +456,11 @@
 
     // ====== DOM ELEMENTS ======
     const reviewsGallery = document.getElementById('reviewsGallery');
+    const guestReviewsGallery = document.getElementById('guestReviewsGallery');
 
-    // ====== RENDER REVIEWS FUNCTION ======
+    // ====== RENDER FRIENDS REVIEWS FUNCTION ======
     function renderReviews() {
-      reviewsGallery.innerHTML = ''; // Clear existing
+      reviewsGallery.innerHTML = '';
       reviews.forEach((rev, i) => {
         const card = document.createElement('article');
         card.classList.add('review-card');
@@ -441,7 +479,29 @@
       });
     }
 
+    // ====== RENDER GUEST REVIEWS FUNCTION ======
+    function renderGuestReviews() {
+      guestReviewsGallery.innerHTML = '';
+      guestReviews.forEach((rev, i) => {
+        const card = document.createElement('article');
+        card.classList.add('review-card');
+        card.tabIndex = 0;
+        card.setAttribute('aria-label', `Guest burger review ${i + 1} by ${rev.guest} with score ${rev.score} out of 10`);
+
+        card.innerHTML = `
+          <div class="review-photo">
+            <img src="${rev.img}" alt="${rev.alt}" loading="lazy" />
+          </div>
+          <div class="guest-name">${rev.guest}</div>
+          <p class="review-text">"${rev.review}"</p>
+          <div class="score" aria-live="polite" aria-atomic="true">Score: ${rev.score} / 10</div>
+        `;
+        guestReviewsGallery.appendChild(card);
+      });
+    }
+
     renderReviews();
+    renderGuestReviews();
 
     // ====== LEAFLET MAP INITIALIZATION ======
     const map = L.map('map', {
