@@ -4,6 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>BurgerQuest LA 🍔 | The Ultimate Burger Reviews</title>
+  <meta name="description" content="BurgerQuest LA is the ultimate burger review site by three friends exploring the best burgers in Los Angeles." />
+  <meta property="og:title" content="BurgerQuest LA 🍔" />
+  <meta property="og:description" content="Join Zach, Sagiv, and Nathan on their quest to find LA's best burgers!" />
+  <meta property="og:image" content="assets/burger-cover.jpg" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
@@ -64,6 +68,7 @@
     }
     .reviewsGallery {
       display: grid;
+      justify-content: center;
       grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
       gap: 2rem;
     }
@@ -93,6 +98,21 @@
       font-size: 0.95rem;
       color: #374151;
     }
+    .submit-review {
+      display: block;
+      margin: 2rem auto;
+      background: #6366f1;
+      color: white;
+      padding: 0.75rem 2rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .submit-review:hover {
+      background: #4338ca;
+    }
     footer {
       text-align: center;
       margin-top: 4rem;
@@ -110,48 +130,48 @@
     <p>Three friends — Zach, Sagiv, and Nathan — went on a mission to crown LA’s best burger. Join their flavorful journey!</p>
   </header>
 
-  <div class="tabs">
-    <button class="tab-button" onclick="switchTab('friends')">🍔 Burger Wall</button>
-    <button class="tab-button" onclick="switchTab('crew')">🤪 Meet the Crew</button>
-    <button class="tab-button" onclick="switchTab('map')">📍 Burger Map</button>
-    <button class="tab-button" onclick="switchTab('guest')">🗣️ Guest Reviews</button>
+  <div class="tabs" role="tablist">
+    <button class="tab-button" onclick="switchTab('friends')" role="tab" aria-selected="true">🍔 Burger Wall</button>
+    <button class="tab-button" onclick="switchTab('crew')" role="tab" aria-selected="false">🤪 Meet the Crew</button>
+    <button class="tab-button" onclick="switchTab('map')" role="tab" aria-selected="false">📍 Burger Map</button>
+    <button class="tab-button" onclick="switchTab('guest')" role="tab" aria-selected="false">🗣️ Guest Reviews</button>
   </div>
 
   <main>
     <section id="friends" class="section active">
       <div class="reviewsGallery">
-        <!-- Injected extended friends burger reviews -->
         <div class="review-card">
-          <img src="heavy handed.jpeg" alt="Closeup of double smashburger" />
+          <img src="heavy handed.jpeg" alt="Heavy Handed burger with double smashed patties and cheese" />
           <h3>Heavy Handed</h3>
           <p>The burger is well-cooked but overwhelmingly rich and sweet. ⭐ 5.8/10</p>
         </div>
         <div class="review-card">
-          <img src="hiho.jpeg" alt="Burger with pastrami and grilled onions" />
+          <img src="hiho.jpeg" alt="HiHo Cheeseburger with pastrami and grilled onions" />
           <h3>Hi Ho Cheeseburger</h3>
           <p>Masterfully executed LA-style burger. ⭐ 7/10</p>
         </div>
         <div class="review-card">
-          <img src="easy street.jpeg" alt="Setting the tone for smashburgers" />
+          <img src="easy street.jpeg" alt="Easy Street smashburger with crispy edges" />
           <h3>Easy Street Burgers</h3>
           <p>Balanced and indulgent smash burger. ⭐ 7.5/10</p>
-        </div></div>
+        </div>
+      </div>
     </section>
 
     <section id="crew" class="section">
       <div class="reviewsGallery">
         <div class="review-card">
-          <img src="assets/zach.jpg" alt="Zach portrait" />
+          <img src="assets/zach.jpg" alt="Zach portrait with burger" />
           <h3>Zach</h3>
           <p>Burger brawler and spice chaser. Once ate five in one day.</p>
         </div>
         <div class="review-card">
-          <img src="assets/nathan.jpg" alt="Nathan portrait" />
+          <img src="assets/nathan.jpg" alt="Nathan portrait with notebook" />
           <h3>Nathan</h3>
           <p>The critic. Brings a notebook to every bite.</p>
         </div>
         <div class="review-card">
-          <img src="assets/sagiv.jpg" alt="Sagiv portrait" />
+          <img src="assets/sagiv.jpg" alt="Sagiv portrait sniffing aioli" />
           <h3>Sagiv</h3>
           <p>Sauce sommelier. Can detect aioli from across the street.</p>
         </div>
@@ -160,7 +180,6 @@
 
     <section id="guest" class="section">
       <div class="reviewsGallery">
-        <!-- Extended guest burger reviews -->
         <div class="review-card">
           <img src="photos/guest-burger1.jpg" alt="Guest burger with melted cheese and pickles" />
           <h3>Justin.</h3>
@@ -180,7 +199,9 @@
           <img src="photos/guest-burger4.jpg" alt="Cheeseburger with grilled onions" />
           <h3>Saanvi</h3>
           <p>"Grilled onions added a sweet depth. The bun was a bit dry though but overall great taste." ⭐ 7/10</p>
-        </div></div>
+        </div>
+      </div>
+      <button class="submit-review">Submit Your Review</button>
     </section>
 
     <section id="map" class="section">
@@ -195,7 +216,17 @@
   <script>
     function switchTab(tabId) {
       document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+      document.querySelectorAll('.tab-button').forEach(btn => btn.setAttribute('aria-selected', 'false'));
       document.getElementById(tabId).classList.add('active');
+      document.querySelector(`.tab-button[onclick*="${tabId}"]`).setAttribute('aria-selected', 'true');
+      localStorage.setItem('activeTab', tabId);
+    }
+
+    window.onload = () => {
+      const savedTab = localStorage.getItem('activeTab');
+      if (savedTab && document.getElementById(savedTab)) {
+        switchTab(savedTab);
+      }
     }
   </script>
 </body>
