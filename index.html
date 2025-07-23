@@ -4,541 +4,199 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>BurgerQuest LA 🍔 | The Ultimate Burger Reviews</title>
-  <!-- Leaflet CSS for interactive map -->
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-sA+eP6sT7hKs/YxNmoLDXuZ2Y+urBlbPXR18VW4H0Mo="
-    crossorigin=""
-  />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
-    /* ========== RESET & BASE ========== */
     * {
       margin: 0; padding: 0; box-sizing: border-box;
       font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
     body {
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      color: #e0e6f2;
-      line-height: 1.5;
+      background: linear-gradient(135deg, #f0f4ff, #e0e7ff);
+      color: #111827;
+      line-height: 1.6;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+      padding: 2rem;
     }
-    a {
-      color: #1ab7ea;
-      text-decoration: none;
-      font-weight: 600;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-    img {
-      max-width: 100%;
-      display: block;
-      border-radius: 14px;
-      cursor: pointer;
-      box-shadow: 0 6px 14px rgba(26, 183, 234, 0.6);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    img:hover {
-      transform: scale(1.08);
-      box-shadow: 0 12px 24px rgba(26, 183, 234, 0.9);
-    }
-    button {
-      cursor: pointer;
-      background-color: #1ab7ea;
-      border: none;
-      color: #0f2027;
-      padding: 0.65rem 1.4rem;
-      border-radius: 30px;
-      font-weight: 700;
-      box-shadow: 0 5px 15px rgba(26, 183, 234, 0.75);
-      margin: 0.4rem;
-      user-select: none;
-      transition: background-color 0.25s ease, box-shadow 0.3s ease;
-    }
-    button:hover, button:focus {
-      background-color: #0ea0d9;
-      box-shadow: 0 8px 22px rgba(14, 160, 217, 0.85);
-      outline: none;
-    }
-
-    /* ========== HEADER ========== */
     header {
-      background: #0a3d62;
-      padding: 2rem 2rem 2.5rem 2rem;
       text-align: center;
-      color: #1ab7ea;
-      box-shadow: 0 3px 12px rgba(10, 61, 98, 0.9);
-      user-select: none;
-      /* Removed sticky positioning to make header scroll with the page */
-      /* position: sticky; */
-      /* top: 0; */
-      /* z-index: 100; */
+      margin-bottom: 2rem;
     }
     header h1 {
-      font-size: 2.8rem;
-      letter-spacing: 0.15em;
-      font-weight: 900;
-      margin-bottom: 0.3rem;
-      text-shadow: 0 0 6px #1ab7ea;
+      font-size: 3rem;
+      font-weight: 800;
+      color: #6366f1;
     }
-    header p.subtitle {
-      font-size: 1.25rem;
-      font-weight: 500;
-      font-style: italic;
-      color: #aad8ffcc;
-      text-shadow: 0 0 4px #0ea0d9cc;
-      margin-bottom: 1rem;
-    }
-    header p.story {
+    header p {
       max-width: 720px;
       margin: 0 auto;
-      font-size: 1.05rem;
-      font-weight: 400;
-      line-height: 1.6;
-      color: #c0dffcdd;
-      user-select: text;
+      color: #6b7280;
     }
-
-    /* ========== MAIN CONTENT ========== */
-    main {
-      flex: 1;
-      max-width: 1100px;
-      margin: 2rem auto 5rem auto;
-      padding: 0 1rem;
+    .tabs {
       display: flex;
-      flex-direction: column;
-      gap: 3rem;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin: 2rem 0;
     }
-
-    /* ========== REVIEW SECTION TITLES ========== */
-    .section-title {
-      text-align: center;
-      font-size: 2.2rem;
-      font-weight: 700;
-      color: #1ab7ea;
-      text-shadow: 0 0 7px #0ea0d9;
-      letter-spacing: 0.1em;
-      margin-bottom: 1.5rem;
-      user-select: none;
+    .tab-button {
+      padding: 0.75rem 1.5rem;
+      border-radius: 2rem;
+      background-color: #c7d2fe;
+      color: #4338ca;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
     }
-
-    /* ========== REVIEWS GALLERY ========== */
+    .tab-button:hover {
+      background-color: #4338ca;
+      color: white;
+    }
+    .section {
+      display: none;
+      animation: fadeIn 0.6s ease;
+    }
+    .section.active {
+      display: block;
+    }
     .reviewsGallery {
       display: grid;
-      grid-template-columns: repeat(auto-fill,minmax(280px,1fr));
-      gap: 1.8rem;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 2rem;
     }
     .review-card {
-      background: rgba(26, 183, 234, 0.15);
-      border-radius: 16px;
-      box-shadow: 0 10px 25px rgba(10, 61, 98, 0.55);
-      padding: 1.4rem 1rem 1rem 1rem;
-      display: flex;
-      flex-direction: column;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      color: #c4e0fc;
-    }
-    .review-card:hover, .review-card:focus-within {
-      transform: translateY(-6px);
-      box-shadow: 0 18px 40px rgba(26, 183, 234, 0.9);
-      outline: none;
-    }
-
-    /* Photo area */
-    .review-photo {
-      overflow: hidden;
-      border-radius: 14px;
-      box-shadow: 0 5px 20px rgba(26, 183, 234, 0.5);
-      margin-bottom: 1rem;
-    }
-    .review-photo img {
-      border-radius: 14px;
-      height: 160px;
-      object-fit: cover;
-      width: 100%;
-      user-select: none;
-    }
-
-    /* Joint/Guest name */
-    .joint-name, .guest-name {
-      font-weight: 700;
-      font-size: 1.15rem;
-      margin-bottom: 0.35rem;
-      color: #1ab7ea;
-      text-shadow: 0 0 6px #0ea0d9;
-      user-select: text;
-    }
-
-    /* Review text */
-    .review-text {
-      flex-grow: 1;
-      font-size: 0.95rem;
-      font-style: italic;
-      margin-bottom: 1rem;
-      color: #d7e9ffcc;
-      user-select: text;
-    }
-
-    /* Reviewer score */
-    .score {
-      align-self: flex-start;
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: #ffd600;
-      text-shadow: 0 0 5px #bba500;
-      user-select: none;
-    }
-
-    /* ========== MAP SECTION ========== */
-    #mapSection {
-      margin: 0 auto;
-      max-width: 1080px;
-      border-radius: 18px;
-      overflow: hidden;
-      box-shadow: 0 12px 30px rgba(26, 183, 234, 0.7);
-      user-select: none;
-      background: #102f44cc;
+      background: white;
+      border-radius: 1rem;
       padding: 1rem;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease;
     }
-    h2#mapTitle {
-      text-align: center;
-      margin-bottom: 1rem;
-      font-size: 2rem;
-      color: #1ab7ea;
-      letter-spacing: 0.1em;
-      text-shadow: 0 0 7px #0ea0d9;
-      user-select: none;
+    .review-card:hover {
+      transform: translateY(-5px);
     }
-    #map {
-      height: 480px;
-      border-radius: 14px;
+    .review-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 0.75rem;
+      margin-bottom: 0.75rem;
     }
-
-    /* ========== FOOTER ========== */
-    footer {
-      background: #0a3d62;
-      color: #1ab7ea;
-      text-align: center;
-      padding: 1.2rem 1rem;
+    .review-card h3 {
+      margin: 0.5rem 0;
+      font-size: 1.2rem;
+      color: #4338ca;
+    }
+    .review-card p {
       font-size: 0.95rem;
-      user-select: none;
-      box-shadow: 0 -3px 10px rgba(10, 61, 98, 0.9);
+      color: #374151;
     }
-
-    /* ========== RESPONSIVE ========== */
-    @media (max-width: 480px) {
-      header h1 {
-        font-size: 2rem;
-      }
-      .reviewsGallery {
-        grid-template-columns: repeat(auto-fill,minmax(160px,1fr));
-        gap: 1.2rem;
-      }
-      .review-photo img {
-        height: 120px;
-      }
-      main {
-        margin: 1.5rem auto 3.5rem auto;
-        padding: 0 0.7rem;
-      }
+    footer {
+      text-align: center;
+      margin-top: 4rem;
+      color: #6b7280;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
-  <!-- Google Fonts Poppins -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
 </head>
 <body>
   <header>
     <h1>BurgerQuest LA 🍔</h1>
-    <p class="subtitle">The Ultimate Burger Reviews from Zach, Sagiv, &amp; Nathan's LA Adventures</p>
-    <p class="story">
-      Three friends – Zach, Sagiv, and Nathan – set off on an epic journey throughout Los Angeles to find the absolute best burger the city has to offer.
-      Armed with a shared love of juicy patties, grilled onions, and mind melting fries, they criss-crossed the town, tasting, rating, and joking their way through 16 incredible burger joints.
-      This site chronicles their delicious discoveries, memorable stories, and honest scores. Join their quest and see who really takes the burger crown!
-    </p>
+    <p>Three friends — Zach, Sagiv, and Nathan — went on a mission to crown LA’s best burger. Join their flavorful journey!</p>
   </header>
 
+  <div class="tabs">
+    <button class="tab-button" onclick="switchTab('friends')">🍔 Burger Wall</button>
+    <button class="tab-button" onclick="switchTab('crew')">🤪 Meet the Crew</button>
+    <button class="tab-button" onclick="switchTab('map')">📍 Burger Map</button>
+    <button class="tab-button" onclick="switchTab('guest')">🗣️ Guest Reviews</button>
+  </div>
+
   <main>
-    <!-- Friends' Reviews Section -->
-    <section aria-labelledby="reviewsTitle">
-      <h2 id="reviewsTitle" class="section-title">Burger Reviews &amp; Scores</h2>
-      <div id="reviewsGallery" class="reviewsGallery" tabindex="0" aria-live="polite"></div>
+    <section id="friends" class="section active">
+      <div class="reviewsGallery">
+        <!-- Injected extended friends burger reviews -->
+        <div class="review-card">
+          <img src="heavy handed.jpeg" alt="Closeup of double smashburger" />
+          <h3>Heavy Handed</h3>
+          <p>The burger is well-cooked but overwhelmingly rich and sweet. ⭐ 5.8/10</p>
+        </div>
+        <div class="review-card">
+          <img src="hiho.jpeg" alt="Burger with pastrami and grilled onions" />
+          <h3>Hi Ho Cheeseburger</h3>
+          <p>Masterfully executed LA-style burger. ⭐ 7/10</p>
+        </div>
+        <div class="review-card">
+          <img src="easy street.jpeg" alt="Setting the tone for smashburgers" />
+          <h3>Easy Street Burgers</h3>
+          <p>Balanced and indulgent smash burger. ⭐ 7.5/10</p>
+        </div></div>
     </section>
 
-    <!-- Guest Reviews Section -->
-    <section aria-labelledby="guestReviewsTitle" style="margin-top: 3rem;">
-      <h2 id="guestReviewsTitle" class="section-title">Guest Reviews</h2>
-      <div id="guestReviewsGallery" class="reviewsGallery" tabindex="0" aria-live="polite"></div>
+    <section id="crew" class="section">
+      <div class="reviewsGallery">
+        <div class="review-card">
+          <img src="assets/zach.jpg" alt="Zach portrait" />
+          <h3>Zach</h3>
+          <p>Burger brawler and spice chaser. Once ate five in one day.</p>
+        </div>
+        <div class="review-card">
+          <img src="assets/nathan.jpg" alt="Nathan portrait" />
+          <h3>Nathan</h3>
+          <p>The critic. Brings a notebook to every bite.</p>
+        </div>
+        <div class="review-card">
+          <img src="assets/sagiv.jpg" alt="Sagiv portrait" />
+          <h3>Sagiv</h3>
+          <p>Sauce sommelier. Can detect aioli from across the street.</p>
+        </div>
+      </div>
     </section>
 
-    <!-- Map Section -->
-    <section id="mapSection" aria-label="Map of burger stops in Los Angeles">
-      <h2 id="mapTitle">Map of Burger Stops Around LA</h2>
-      <div id="map" role="application" aria-roledescription="interactive map"></div>
+    <section id="guest" class="section">
+      <div class="reviewsGallery">
+        <!-- Extended guest burger reviews -->
+        <div class="review-card">
+          <img src="photos/guest-burger1.jpg" alt="Guest burger with melted cheese and pickles" />
+          <h3>Justin.</h3>
+          <p>"Amazing flavors, the patty was juicy and cooked perfectly. Would definitely come back!" ⭐ 9/10</p>
+        </div>
+        <div class="review-card">
+          <img src="photos/guest-burger2.jpg" alt="Guest burger with crispy bacon and lettuce" />
+          <h3>Ben</h3>
+          <p>"The bacon was crispy and the sauce had a great kick. A solid burger experience." ⭐ 8/10</p>
+        </div>
+        <div class="review-card">
+          <img src="photos/guest-burger3.jpg" alt="Delicious veggie burger with fresh tomatoes" />
+          <h3>Noah/Lavi</h3>
+          <p>"Loved the veggie option here - flavorful and filling. One of the best veggie burgers in LA!" ⭐ 10/10</p>
+        </div>
+        <div class="review-card">
+          <img src="photos/guest-burger4.jpg" alt="Cheeseburger with grilled onions" />
+          <h3>Saanvi</h3>
+          <p>"Grilled onions added a sweet depth. The bun was a bit dry though but overall great taste." ⭐ 7/10</p>
+        </div></div>
+    </section>
+
+    <section id="map" class="section">
+      <iframe src="https://www.google.com/maps/d/embed?mid=1FqWhmpQ2x1G8z3wL1hZcYrQsNN_Qzv0&hl=en" width="100%" height="480" style="border-radius: 1rem; border: none;"></iframe>
     </section>
   </main>
 
   <footer>
-    &copy; 2024 BurgerQuest LA | Zach, Sagiv &amp; Nathan's epic burger adventure!
+    &copy; 2024 Burger Quest LA — No diets were harmed in the making.
   </footer>
 
-  <!-- Leaflet JS for map -->
-  <script
-    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-pMJOTmssZNVws1ih5JhvoUMVGNs47yrtvXgZMjXdCtw="
-    crossorigin=""
-  ></script>
-
   <script>
-    // ====== FRIENDS' BURGER REVIEWS DATA ======
-    const reviews = [
-      {
-        img: 'heavy handed.jpeg',
-        alt: 'Closeup of double smashburger',
-        joint: "Heavy Handed",
-        review: "The burger is well-cooked but overwhelmingly rich and sweet, lacking freshness or crunch, with a sweet bun, mild pickles, and no vegetables to balance the flavors. While the fries and beer substitution are solid, the overall experience feels overpriced, especially with the uncomfortable outdoor seating.",
-        score: 5.8
-      },
-      {
-        img: 'hiho.jpeg',
-        alt: 'Burger with pastrami and grilled onions',
-        joint: "Hi Ho Cheeseburger",
-        review: "The burger is a masterfully executed take on the classic LA-style, with incredibly juicy wagyu beef, balanced condiments, and thoughtful additions like crunchy lettuce and tangy pickles that enhance rather than overshadow the meat. While the fries weren’t to the reviewer’s taste and the price is a downside, the overall experience delivers a near-perfect “home burger” elevated by high-quality ingredients.",
-        score: 7
-      },
-      {
-        img: 'easy street.jpeg',
-        alt: 'Setting the tone for smashburgers',
-        joint: "Easy Street Burgers",
-        review: "Easy Street delivers a well-balanced, greasy, and indulgent smash burger anchored by phenomenal grilled onions, tangy sauce, and a crispy, lacy patty, though it skips fresh elements like lettuce or tomato. While the wild fries fall short of In-N-Out’s animal style, the overall experience captures exactly what modern smash burger joints strive for..",
-        score: 7.5
-      },
-      {
-        img: 'photos/burger4.jpg',
-        alt: 'Spicy burger with jalapeños and pepper jack cheese',
-        joint: "Spice Stack",
-        review: "A fiery delight! Loved the heat and creaminess combo, but maybe a bit too spicy for some.",
-        score: 8
-      },
-      {
-        img: 'photos/burger5.jpg',
-        alt: 'Veggie burger topped with avocado slices',
-        joint: "Green Bite",
-        review: "Who says veggie burgers can't be indulgent? Creamy avocado made it unforgettable.",
-        score: 10
-      },
-      {
-        img: 'photos/burger6.jpg',
-        alt: 'Burger with fried egg and crispy bacon',
-        joint: "Morning Patty",
-        review: "Breakfast meets burger! The runny egg sauce was divine with the smoky bacon.",
-        score: 10
-      },
-      {
-        img: 'photos/burger7.jpg',
-        alt: 'Sliders variety platter with different sauces',
-        joint: "Slider Station",
-        review: "Perfect for sharing! Each slider brought something unique to the table.",
-        score: 9
-      },
-      {
-        img: 'photos/burger8.jpg',
-        alt: 'BBQ burger with onion rings',
-        joint: "Ring & Grill",
-        review: "BBQ sauce packed with flavor and crispy onion rings made it extra crunchy and tasty.",
-        score: 8
-      },
-      {
-        img: 'photos/burger9.jpg',
-        alt: 'Burger with blue cheese and caramelized onions',
-        joint: "Bold Buns",
-        review: "Bold choice! The blue cheese added a lovely tanginess to the rich patty.",
-        score: 7
-      },
-      {
-        img: 'photos/burger10.jpg',
-        alt: 'Cheeseburger with fresh arugula and pesto',
-        joint: "Fresh Greens Burger",
-        review: "Fresh and herbaceous — the pesto was a game changer in this burger.",
-        score: 10
-      },
-      {
-        img: 'photos/burger11.jpg',
-        alt: 'Double patty bacon burger with cheddar',
-        joint: "Meat Feast",
-        review: "Meat lovers rejoice! Double patties stacked with crispy bacon and cheddar cheese.",
-        score: 10
-      },
-      {
-        img: 'photos/burger12.jpg',
-        alt: 'Burger with grilled mushrooms and swiss cheese',
-        joint: "Swiss & Shrooms",
-        review: "Earthy mushrooms paired perfectly with smooth Swiss; very satisfying taste profile.",
-        score: 9
-      },
-      {
-        img: 'photos/burger13.jpg',
-        alt: 'Chili burger with cheese sauce',
-        joint: "Chili Shack",
-        review: "Spicy chili and gooey cheese make this a comfort classic. Loved every bite!",
-        score: 9
-      },
-      {
-        img: 'photos/burger14.jpg',
-        alt: 'Classic burger with ketchup and mustard',
-        joint: "Classic Corner",
-        review: "Simple but effective — sometimes you just want that nostalgic classic burger taste.",
-        score: 7
-      },
-      {
-        img: 'photos/burger15.jpg',
-        alt: 'Turkey burger with cranberry sauce',
-        joint: "Turkey Time",
-        review: "A fresh twist on the usual burger. Tart cranberry balanced lean turkey wonderfully.",
-        score: 8
-      },
-      {
-        img: 'photos/burger16.jpg',
-        alt: 'Loaded bacon and cheese burger with fries',
-        joint: "Bacon & Cheese Deluxe",
-        review: "Indulgent and loaded with toppings, this burger was pure joy with crispy fries on side.",
-        score: 10
-      },
-    ];
-
-    // ====== GUEST BURGER REVIEWS DATA ======
-    const guestReviews = [
-      {
-        img: 'photos/guest-burger1.jpg',
-        alt: 'Guest burger with melted cheese and pickles',
-        guest: "Justin.",
-        review: "Amazing flavors, the patty was juicy and cooked perfectly. Would definitely come back!",
-        score: 9
-      },
-      {
-        img: 'photos/guest-burger2.jpg',
-        alt: 'Guest burger with crispy bacon and lettuce',
-        guest: "Ben",
-        review: "The bacon was crispy and the sauce had a great kick. A solid burger experience.",
-        score: 8
-      },
-      {
-        img: 'photos/guest-burger3.jpg',
-        alt: 'Delicious veggie burger with fresh tomatoes',
-        guest: "Noah/Lavi",
-        review: "Loved the veggie option here - flavorful and filling. One of the best veggie burgers in LA!",
-        score: 10
-      },
-      {
-        img: 'photos/guest-burger4.jpg',
-        alt: 'Cheeseburger with grilled onions',
-        guest: "Saanvi",
-        review: "Grilled onions added a sweet depth. The bun was a bit dry though but overall great taste.",
-        score: 7
-      },
-      // Add more guest reviews as needed, up to 16
-    ];
-
-    // ====== BURGER SPOTS FOR MAP ======
-    // General burger spots around LA for the journey
-    const burgerSpots = [
-      { name: "Downtown Grill", coords: [34.052235, -118.243683], desc: 'Juicy delights in Downtown' },
-      { name: "Beverly Buns", coords: [34.080641, -118.374239], desc: 'Gourmet patties in Beverly Hills' },
-      { name: "Grand Central Burgers", coords: [34.053690, -118.242766], desc: 'Stacks near Grand Central Market' },
-      { name: "Spice Stack", coords: [34.069008, -118.441154], desc: 'Spicy goodness near UCLA' },
-      { name: "Green Bite", coords: [34.076234, -118.260181], desc: 'Veggie heaven' },
-      { name: "Morning Patty", coords: [34.100593, -118.326530], desc: 'Breakfast inspired burger' },
-      { name: "Slider Station", coords: [34.015136, -118.496537], desc: 'A variety of sliders' },
-      { name: "Ring & Grill", coords: [34.138116, -118.353378], desc: 'BBQ and onion rings' },
-    ];
-
-    // ====== DOM ELEMENTS ======
-    const reviewsGallery = document.getElementById('reviewsGallery');
-    const guestReviewsGallery = document.getElementById('guestReviewsGallery');
-
-    // ====== RENDER FRIENDS REVIEWS FUNCTION ======
-    function renderReviews() {
-      reviewsGallery.innerHTML = '';
-      reviews.forEach((rev, i) => {
-        const card = document.createElement('article');
-        card.classList.add('review-card');
-        card.tabIndex = 0;
-        card.setAttribute('aria-label', `Burger review ${i + 1} from ${rev.joint} with score ${rev.score} out of 10`);
-
-        card.innerHTML = `
-          <div class="review-photo">
-            <img src="${rev.img}" alt="${rev.alt}" loading="lazy" />
-          </div>
-          <div class="joint-name">${rev.joint}</div>
-          <p class="review-text">"${rev.review}"</p>
-          <div class="score" aria-live="polite" aria-atomic="true">Score: ${rev.score} / 10</div>
-        `;
-        reviewsGallery.appendChild(card);
-      });
+    function switchTab(tabId) {
+      document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
     }
-
-    // ====== RENDER GUEST REVIEWS FUNCTION ======
-    function renderGuestReviews() {
-      guestReviewsGallery.innerHTML = '';
-      guestReviews.forEach((rev, i) => {
-        const card = document.createElement('article');
-        card.classList.add('review-card');
-        card.tabIndex = 0;
-        card.setAttribute('aria-label', `Guest burger review ${i + 1} by ${rev.guest} with score ${rev.score} out of 10`);
-
-        card.innerHTML = `
-          <div class="review-photo">
-            <img src="${rev.img}" alt="${rev.alt}" loading="lazy" />
-          </div>
-          <div class="guest-name">${rev.guest}</div>
-          <p class="review-text">"${rev.review}"</p>
-          <div class="score" aria-live="polite" aria-atomic="true">Score: ${rev.score} / 10</div>
-        `;
-        guestReviewsGallery.appendChild(card);
-      });
-    }
-
-    renderReviews();
-    renderGuestReviews();
-
-    // ====== LEAFLET MAP INITIALIZATION ======
-    const map = L.map('map', {
-      center: [34.05, -118.25], // Centered LA
-      zoom: 11,
-      maxZoom: 17,
-      minZoom: 10,
-      scrollWheelZoom: false,
-    });
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution:
-        '&copy; <a href="https://openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors',
-    }).addTo(map);
-
-    // Custom blue markers with white stroke
-    function createBlueMarker() {
-      return L.divIcon({
-        html: `<svg xmlns="http://www.w3.org/2000/svg" height="36" width="28" viewBox="0 0 24 32" fill="#1ab7ea" stroke="white" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><path d="M12 0C7.03 0 3 4.06 3 9.09c0 5.85 8.85 17.37 8.97 17.5a1 1 0 0 0 1.06 0c.12-.13 9-11.6 9-17.5C21 4.05 16.97 0 12 0z"/></svg>`,
-        className: '',
-        iconSize: [28, 36],
-        iconAnchor: [14, 36],
-        popupAnchor: [0, -36],
-      });
-    }
-
-    burgerSpots.forEach(spot => {
-      const marker = L.marker(spot.coords, {
-        icon: createBlueMarker(),
-        alt: `Burger Spot: ${spot.name}`,
-      }).addTo(map);
-
-      marker.bindPopup(`
-        <strong style="color:#1ab7ea;">${spot.name}</strong><br />
-        <small style="color:#aad8ffcc;">${spot.desc}</small>
-      `);
-    });
   </script>
 </body>
 </html>
